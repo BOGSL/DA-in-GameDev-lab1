@@ -40,6 +40,7 @@
 ### Написать программы Hello World на Python и Unity
 Для написания однострочной программы, которая выводит надпись "Hello World", использовалось приложение Jupiter Notebook. Скриншот результата выполнения программы:
 ![image](https://user-images.githubusercontent.com/114569910/192793971-332f336b-c098-4a17-bbb8-cbe5fe7a5e66.png) 
+
 Код программы:
 ```py
 
@@ -48,6 +49,7 @@ print('Hello World')
 ```
 
 Был создан 2D проект в Unity. В проект добавлен скрипт HelloWorld.cs (код приведен ниже).
+```C#
 Скриншот результата запуска сцены:
 ## Задание 2
 ### В разделе «Ход работы» пошагово выполнить каждый пункт с описанием и примером реализации задачи по теме лабораторной работы.
@@ -142,19 +144,6 @@ oEditor.CreateSphere(
 )
 
 ```
-
-## Выводы
-
-Абзац умных слов о том, что было сделано и что было узнано.
-
-| Plugin | README |
-| ------ | ------ |
-| Dropbox | [plugins/dropbox/README.md][PlDb] |
-| GitHub | [plugins/github/README.md][PlGh] |
-| Google Drive | [plugins/googledrive/README.md][PlGd] |
-| OneDrive | [plugins/onedrive/README.md][PlOd] |
-| Medium | [plugins/medium/README.md][PlMe] |
-| Google Analytics | [plugins/googleanalytics/README.md][PlGa] |
 
 ## Powered by
 
