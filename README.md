@@ -49,8 +49,31 @@ print('Hello World')
 ```
 
 Был создан 2D проект в Unity. В проект добавлен скрипт HelloWorld.cs (код приведен ниже). Он прикреплен к камере
-```C#
+```py
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class HelloWorld : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        Debug.Log("Hello World");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
+
+```
 Скриншот результата запуска сцены:
+![image](https://user-images.githubusercontent.com/114569910/192810969-7fb33f96-d8cf-4544-bce4-611e620ad8a8.png)
+
 ## Задание 2
 ### В разделе «Ход работы» пошагово выполнить каждый пункт с описанием и примером реализации задачи по теме лабораторной работы.
 Для выполнения следующего задания я переписал код из методических указаний:
