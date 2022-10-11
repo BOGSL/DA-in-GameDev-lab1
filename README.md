@@ -40,13 +40,14 @@
 ### Реализовать совместную работу и передачу данных в связке Python — Google-таблицы — Unity.
 В ходе выполнения работы был создан проект в Google Cloud, где подключился API для работы с Google Sheets. Также был создан сервисный аккаунт. Его данные отправляются в гугл-таблицы
 ![image](https://user-images.githubusercontent.com/114569910/195168998-af68f14d-28aa-4f04-a007-fd09c54af873.png)
+
 Затем был написан код на Python после настройки передачи данных. Код генерировал случайные числа, являющиеся ценами, а также рассчитывал инфляцию по этим ценам и загружал их в таблицу (код ниже)
 ```py
 import gspread
 import numpy as np
 
-gc = gspread.service_account(filename='lab2-364110-a302ae311266.json')
-sh = gc.open("lab2z2test")
+gc = gspread.service_account(filename='reference-bee-365214-98c171297ca4.json')
+sh = gc.open("UnitySheets")
 
 x = [3, 21, 22, 34, 54, 34, 55, 67, 89, 99]
 x = np.array(x)
@@ -98,6 +99,101 @@ while i <= len(mon):
         sh.sheet1.update(('B' + str(i)), str(round(price[i - 1])))
         sh.sheet1.update(('C' + str(i)), str(tempInf))
         print(tempInf)
+```
+Таблица была заполнена ценами и значениями в 11 строк:
+![image](https://user-images.githubusercontent.com/114569910/195170472-88836d14-b119-4fa3-96e8-f52084affbe1.png)
+
+Далее был создан там 3D проект в Unity. Стоимость проекта увеличилась на пустой объект и два пакета с библиотеками и звуками. Затем был создан скрипт, получающий из гугл-таблицы значения и анализирующий их. Теперь воспроизводящий звук выводит значение параметра (код ниже)
+```py
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
+using SimpleJSON;
+
+public class NewBehaviourScript : MonoBehaviour
+{
+    public AudioClip goodSpeak;
+    public AudioClip normalSpeak;
+    public AudioClip badSpeak;
+    private AudioSource selectAudio;
+    private Dictionary<string,float> dataSet = new Dictionary<string, float>();
+    private bool statusStart = false;
+    private int i = 1;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        StartCoroutine(GoogleSheets());
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (dataSet["Mon_" + i.ToString()] <= 10 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioGood());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] > 10 & dataSet["Mon_" + i.ToString()] < 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioNormal());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+
+        if (dataSet["Mon_" + i.ToString()] >= 100 & statusStart == false & i != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioBad());
+            Debug.Log(dataSet["Mon_" + i.ToString()]);
+        }
+    }
+
+    IEnumerator GoogleSheets()
+    {
+        UnityWebRequest curentResp = UnityWebRequest.Get("https://sheets.googleapis.com/v4/spreadsheets/1Z0GWJ17lsmWgwZCaj2fMoeFlYF3tHAvMOQhszr9YLRE/values/Лист1?key=AIzaSyDtPtt3x6uhC2e_yQHa3fuhu9HwAbmtXtE");
+        yield return curentResp.SendWebRequest();
+        string rawResp = curentResp.downloadHandler.text;
+        var rawJson = JSON.Parse(rawResp);
+        foreach (var itemRawJson in rawJson["values"])
+        {
+            var parseJson = JSON.Parse(itemRawJson.ToString());
+            var selectRow = parseJson[0].AsStringList;
+            dataSet.Add(("Mon_" + selectRow[0]), float.Parse(selectRow[2]));
+        }
+    }
+
+    IEnumerator PlaySelectAudioGood()
+    {
+        statusStart = true;
+        selectAudio = GetComponent<AudioSource>();
+        selectAudio.clip = goodSpeak;
+        selectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioNormal()
+    {
+        statusStart = true;
+        selectAudio = GetComponent<AudioSource>();
+        selectAudio.clip = normalSpeak;
+        selectAudio.Play();
+        yield return new WaitForSeconds(3);
+        statusStart = false;
+        i++;
+    }
+    IEnumerator PlaySelectAudioBad()
+    {
+        statusStart = true;
+        selectAudio = GetComponent<AudioSource>();
+        selectAudio.clip = badSpeak;
+        selectAudio.Play();
+        yield return new WaitForSeconds(4);
+        statusStart = false;
+        i++;
+    }
+}
 ```
 ## Задание 2
 ### В разделе «Ход работы» пошагово выполнить каждый пункт с описанием и примером реализации задачи по теме лабораторной работы.
