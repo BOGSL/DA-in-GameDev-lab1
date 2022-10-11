@@ -206,18 +206,102 @@ public class NewBehaviourScript : MonoBehaviour
 ![image](https://user-images.githubusercontent.com/114569910/195173723-edcee45b-7323-4d8d-847a-390d21525b72.png)
 
 ## Задание 2
-### В разделе «Ход работы» пошагово выполнить каждый пункт с описанием и примером реализации задачи по теме лабораторной работы.
-Для выполнения следующего задания я переписал код из методических указаний, а затем видоизменил его:
+### Реализовать запись в Google-таблице сбора данных, доходов с помощью линейной регрессии из лабораторной работы № 1
+По ходу работы был изменен код на Python, туда была добавлена функция линейной регрессии. (Код ниже)
 
-### Изучить код на Python и ответить на вопросы:
+```py
+
+import gspread
+import numpy as np
+
+gc = gspread.service_account(filename='lab2-364110-a302ae311266.json')
+sh = gc.open("lab2z2test")
+
+x = [3, 21, 22, 34, 54, 34, 55, 67, 89, 99]
+x = np.array(x)
+y = [2, 22, 24, 65, 79, 82, 55, 130, 150, 199]
+y = np.array(y)
 
 
-### Какова роль параметра Lr? Ответьте на вопрос, приведите пример выполнения кода, который подтверждает ваш ответ. В качестве эксперимента можете изменить значение параметра.
-При выполнении программы считается сумма отклонений y от предположительного, в случае если бы точки считались по функции, а не были бы заданы (da,db). a и b получают значение разности самих себя с этими отклонениями, умноженными на коэффицент Lr. Lr - "сдерживающий" коэффицент, он не позволяет a и b прийти к нулю, а значит, и обнулить функцию.
+def model(a, b, x):
+    return a * x + b
+
+
+def optimize(a, b, x, y):
+    num = len(x)
+    prediction = model(a, b, x)
+    da = (0.1 / num) * ((prediction - y) * x).sum()
+    db = (0.1 / num) * ((prediction - y).sum())
+    a = a - Lr * da
+    b = b - Lr * db
+    return a, b
+
+
+def iterate(a, b, x, y, times):
+    for i in range(times):
+        a, b = optimize(a, b, x, y)
+        return (a, b)
+
+
+a = np.random.rand(10)
+
+b = np.random.rand(10)
+
+Lr = 0.005
+a, b = iterate(a, b, x, y, 100)
+prediction = model(a, b, x)
+
+price = np.array(a+b)*100
+
+mon = list(range(1, 10))
+i = 0
+while i <= len(mon):
+    i += 1
+    if i == 0:
+        continue
+    else:
+        tempInf = ((price[i - 1] - price[i - 2]) / price[i - 2]) * 100
+        tempInf = str(tempInf)
+        tempInf = tempInf.replace('.', ',')
+        sh.sheet1.update(('A' + str(i)), str(i))
+        sh.sheet1.update(('B' + str(i)), str(round(price[i - 1])))
+        sh.sheet1.update(('C' + str(i)), str(tempInf))
+        print(tempInf)
+        
+```
+Чтобы выполнить код используется такой набор данных:
+
+![image](https://user-images.githubusercontent.com/114569910/195175042-712cdeb9-dc68-4cd1-9e56-ce2181617011.png)
+
+## Задание 3
+### Самостоятельная разработка сценария воспроизведения звукового сопровождения в Unity в зависимости от изменения считанных данных в задании 2
+По ходу этого задания был изменил источник данных на таблицу, в который засчитаны значения из задания 2. Был создан сценарий обработки данных. Добавлен новый фрагмент кода (ниже)
+```py
+ if (dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())] <= 5 & dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())] >= -5 & statusStart == false & i+1 != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioNormal());
+            Debug.Log(dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())]);
+        }
+
+        if (dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())] > 5 & statusStart == false & i+1 != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioBad());
+            Debug.Log(dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())]);
+        }
+
+        if (dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())] < -5 & statusStart == false & i+1 != dataSet.Count)
+        {
+            StartCoroutine(PlaySelectAudioGood());
+            Debug.Log(dataSet["Mon_" + ((int)i+1).ToString()]-dataSet["Mon_"+(i.ToString())]);
+        }
+```
+Результат запуска сцены:
+
+![image](https://user-images.githubusercontent.com/114569910/195175646-5d0656e9-91d0-431b-8db1-2e669011903d.png)
+
+
 ## Выводы
-Абзац умных слов о том, что было сделано и что было узнано.
-
-Во время выполнения данной лабораторной работы я познакомился с платформой Unity, установил всё необходимое ПО для будущих работ, научился писать и использовать скрипты в сценах Unity, освоил навыки работы в Python в новинку, а также владею знаниями о работе в Jupiter Notepad и Anaconda.
+По ходу выполнения этой работы я познакомился с API для работы Python и C# с гугл-таблицами, научился генерировать данные в питоне и передаваь их в C#. Изучил ранее неизвестный мне парсер SimpleJSON для C#, научился создавать и настраивать гугл-таблицы. Также я создал первый проект в Unity, состоящий не только из скрипта, выводящего одно сообщение при запуске, а обрабатывающий данные каждый условный тик и воспроизводящий звук в зависимости от результатов обработки
 
 ## Powered by
 
