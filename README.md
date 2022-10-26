@@ -140,6 +140,7 @@ public class RollerAgent : Agent
 ![image](https://user-images.githubusercontent.com/114569910/197946593-045279dd-6970-4f7c-b290-7c35d7fa373f.png)
 - После завершения обучения проверяем работу модели.
 
+![2022-10-25 18-04-37](https://user-images.githubusercontent.com/90757310/197796481-968d0e61-6274-4c3a-8491-06ae97367367.gif)
 ## Задание 2
 ### 
 
