@@ -58,6 +58,12 @@
 
 ![image](https://user-images.githubusercontent.com/114569910/197945245-e580fd81-b797-4056-a015-35b56c177296.png)
 - `torch 1.7.1`
+- 
+![image](https://user-images.githubusercontent.com/114569910/197945538-f4b228ed-f5d3-4f8e-8acf-682a2f2f1052.png)
+- Создаем на сцене плоскость, куб и сферу. Далее создаем простой C# скрипт и подключаем его к сфере:
+
+![image](https://user-images.githubusercontent.com/114569910/197945817-ef8f180b-e340-43c3-b97f-d1928dbf0d7d.png)
+- В скрипт-файл RollerAgent.cs добавляем код:
 
 ## Задание 2
 ### 
