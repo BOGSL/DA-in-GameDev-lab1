@@ -57,7 +57,7 @@
 - `mlagents 0.28.0`
 
 ![image](https://user-images.githubusercontent.com/114569910/197945245-e580fd81-b797-4056-a015-35b56c177296.png)
-- `torch 1.7.1
+- torch 1.7.1
 
 ## Задание 2
 ### 
