@@ -43,9 +43,18 @@
 ### Реализовать систему машинного обучения в связке Python - Google-Sheets – Unity.
 -	Создаем новый пустой 3D проект на Unity.
 -	Скачиваем папку с ML агентом. 
--	
-![image](https://user-images.githubusercontent.com/114569910/197943922-8c1c3fcd-d4b5-43f5-94f8-aba7a1b67846.png)
 
+![image](https://user-images.githubusercontent.com/114569910/197943922-8c1c3fcd-d4b5-43f5-94f8-aba7a1b67846.png)
+- В созданный проект добавляем ML Agent, выбрав Window - Package Manager - Add Package from disk. Последовательно добавляем .json – файлы:
+	ml-agents-release_19 / com,unity.ml-agents / package.json
+	ml-agents-release_19 / com,unity.ml-agents.extensions / package.json
+  
+![image](https://user-images.githubusercontent.com/114569910/197944844-45e2d5d1-c8d9-4b1a-9061-52653348d942.png)
+-	Затем запускаем Anaconda Prompt для возможности запуска команд через консоль.
+
+![image](https://user-images.githubusercontent.com/114569910/197945025-c1e56b8a-fdf4-45bf-a23d-255f0713c980.png)
+-	Далее пишем серию команд для создания и активации нового ML-агента, а также для скачивания необходимых библиотек:
+-	`mlagents 0.28.0`
 
 ## Задание 2
 ### 
